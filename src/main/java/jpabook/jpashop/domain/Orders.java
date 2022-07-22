@@ -23,7 +23,7 @@ public class Orders {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn("delivery_id")
+    @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     private LocalDateTime orderDate; // 주문시간
