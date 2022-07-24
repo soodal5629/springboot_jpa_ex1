@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class MemberRepository {
 
-    @PersistenceContext // jpa가 제공하는 표준 어노테이션
+    @PersistenceContext // jpa가 제공하는 표준 어노테이션 --> 스프링부트는 Autowired 생성자 인젝션 방식도 가능
     private EntityManager em; // 스프링이 Entity Manager 인젝션해줌
 
     public void save(Member member){
