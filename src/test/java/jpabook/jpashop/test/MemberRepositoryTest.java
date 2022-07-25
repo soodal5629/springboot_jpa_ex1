@@ -1,3 +1,4 @@
+/*
 package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
@@ -39,4 +40,4 @@ class MemberRepositoryTest {
     @Test
     void find() {
     }
-}
+}*/

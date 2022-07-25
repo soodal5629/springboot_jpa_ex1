@@ -1,4 +1,4 @@
-package jpabook.jpashop;
+package jpabook.jpashop.test;
 
 import jpabook.jpashop.domain.Member;
 import org.springframework.stereotype.Repository;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Repository
+//@Repository
 public class MemberRepository {
 
     /* 엔티티 매니저 */
