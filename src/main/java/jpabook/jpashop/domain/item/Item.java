@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
+import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +25,23 @@ public abstract class Item {
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
+    /* 데이터를 가지고있는 쪽에 비즈니스 로직을 두는 것이 더 객체지향적이고 응집력이 높다. */
+    /*
+    * 재고수량 증가
+    * */
+    public void addStock(int quantity){
+        this.stockQuantity += quantity;
+    }
+    /*
+    * 재고수량 감소
+    * */
+    public void removeStock(int quantity){
+        int resStock = this.stockQuantity - quantity;
+        if(resStock < 0){
+            throw new NotEnoughStockException("need more stock");
+        }
+        this.stockQuantity = resStock;
+    }
 
 }
