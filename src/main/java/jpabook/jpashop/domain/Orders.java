@@ -46,4 +46,49 @@ public class Orders {
         this.delivery = delivery;
         delivery.setOrder(this);
     }
+
+    /* 생성 메소드 */
+    // 주문 생성 메소드
+    public static Orders createOrder(Member member, Delivery delivery, OrderItem... orderItems){
+        Orders orders = new Orders();
+        orders.setMember(member);
+        orders.setDelivery(delivery);
+        for(OrderItem orderItem : orderItems){
+            orders.addOrderItem(orderItem);
+        }
+        orders.setStatus(OrderStatus.ORDER);
+        orders.setOrderDate(LocalDateTime.now());
+        return orders;
+    }
+
+    /* ======== 비즈니스 로직 ======== */
+
+    /*
+    * 주문취소
+   * */
+    public void cancel(){
+        if(delivery.getStatus() == DeliveryStatus.COMP){ // 배송이 완료되면
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+        this.setStatus(OrderStatus.CANCEL); // 위 validation에 안걸리면 취소 상태로 변경해줌
+        for(OrderItem orderItem : orderItems){
+            orderItem.cancel();
+        }
+    }
+
+    /* ===== 조회로직 ===== */
+
+    /*
+    * 전체 주문 가격
+    * */
+    public int totalPrice(){
+        /*int totalPrice = 0;
+        for(OrderItem orderItem : orderItems){
+            totalPrice += orderItem.getTotalPrice();
+        } 이 코드가 아래 return 값이랑 똑같음 */
+
+        return orderItems.stream().
+                mapToInt(OrderItem::getTotalPrice)
+                .sum();
+    }
 }
