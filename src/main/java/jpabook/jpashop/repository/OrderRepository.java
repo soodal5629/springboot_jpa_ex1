@@ -20,8 +20,15 @@ public class OrderRepository {
         return em.find(Orders.class, id);
     }
 
-    /*public List<Orders> findAll(OrderSearch orderSearch){
-        return null;
-    }*/
+    /* 검색 - 동적 쿼리 필요 */
+    public List<Orders> findAll(OrderSearch orderSearch){
+        return em.createQuery("select o from Orders o join o.member m"
+                +" where o.status = :status "
+                + "and m.username like :name", Orders.class)
+                .setParameter("status", orderSearch.getOrderStatus())
+                .setParameter("name", orderSearch.getMemberName())
+                .setMaxResults(1000) // 최대 1000건
+                .getResultList();
+    }
 
 }
