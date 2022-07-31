@@ -42,6 +42,10 @@ public class MemberController {
 
     @GetMapping("/members")
     public String list(Model model){
+        // 여기서는 요구사항이 매우 간단해서 Member 엔티티를 직접 뿌렸지만
+        // 실무에서는 MemberForm과 같은 DTO를 뿌리는 것을 권장함
+        // 화면과 비즈니스 엔티티는 분리하는 것이 좋음
+        // API를 만들때는 엔티티를 외부로 반환, 혹은 넘겨서는 절대!!! 안됨!!!! -> 결국 dto를 반환해라
         List<Member> members = memberService.findMembers();
         model.addAttribute("members", members);
         return "members/memberList";
