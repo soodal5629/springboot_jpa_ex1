@@ -27,6 +27,8 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 	/* 개발단계에서는 괜찮지만 운영에서는 성능에 영향이 있을 수 있으므로 운영 시에는 성능테스트 후 적용할 것 */
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
 
