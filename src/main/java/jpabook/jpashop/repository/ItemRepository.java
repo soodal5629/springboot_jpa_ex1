@@ -16,7 +16,7 @@ public class ItemRepository {
         if (item.getId() == null){
             em.persist(item);
         }else{
-            em.merge(item); // update와 비슷?
+            em.merge(item); // update와 비슷하지만 위험(null인 것도 그대로 db에 다 들어가므로)
         }
     }
 

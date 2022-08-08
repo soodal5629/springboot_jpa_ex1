@@ -60,7 +60,7 @@ public class ItemController {
 
     @PostMapping("items/{itemId}/edit")
     public String updateItem(BookForm form){
-        Book book = new Book();
+        Book book = new Book(); // 준영속 상태임!!! -> 내가 new로 만들어서 그냥 set 해준 것 뿐이므로 준영속 상태!!!(중여)
         book.setId(form.getId());
         book.setName(form.getName());
         book.setPrice(form.getPrice());
