@@ -48,6 +48,15 @@ public class OrderSimpleApiController {
         return result;
     }
 
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3(){ // fetch join 사용 - 성능 최적화
+        List<Orders> orders = orderRepository.findAllWithMemberDelivery(); // 진짜 Member 객체랑 Delivery 객체가 같이 조회되므로 지연 로딩 자체가 일어나지 않음
+        List<SimpleOrderDto> result = orders.stream()
+                .map(o -> new SimpleOrderDto(o))
+                .collect(Collectors.toList());
+        return result;
+    }
+
     @Data
     static class SimpleOrderDto {
         private Long orderId;
