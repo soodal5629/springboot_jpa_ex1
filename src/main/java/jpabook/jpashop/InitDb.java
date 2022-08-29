@@ -20,6 +20,7 @@ public class InitDb {
     // 또한 @PostConstruct에서 @Transactional 먹이는 것이 잘 안됨(스프링 라이프 사이클과 관련..)
     public void init(){
         initService.dbInit();
+        initService.dbInit2();
     }
 
     @Component
