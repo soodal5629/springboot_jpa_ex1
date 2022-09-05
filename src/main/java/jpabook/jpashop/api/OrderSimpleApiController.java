@@ -5,6 +5,7 @@ import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.Orders;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.OrderSimpleQueryDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +51,16 @@ public class OrderSimpleApiController {
 
     @GetMapping("/api/v3/simple-orders")
     public List<SimpleOrderDto> ordersV3(){ // fetch join 사용 - 성능 최적화
-        List<Orders> orders = orderRepository.findAllWithMemberDelivery(); // 진짜 Member 객체랑 Delivery 객체가 같이 조회되므로 지연 로딩 자체가 일어나지 않음
+        List<Orders> orders = orderRepository.findAllWithMemberDelivery(); // 진짜 Member 객체랑 Delivery 객체가 같이 조회되므로 지연 로딩 자체가 일어나지 않음(N+1 문제 해결)
         List<SimpleOrderDto> result = orders.stream()
                 .map(o -> new SimpleOrderDto(o))
                 .collect(Collectors.toList());
         return result;
+    }
+
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4(){
+        return orderRepository.findOrderDtos();
     }
 
     @Data
