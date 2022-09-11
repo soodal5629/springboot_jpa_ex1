@@ -86,4 +86,15 @@ public class OrderRepository {
     }
 
 
+    public List<Orders> findAllWithItem() {
+        // distinct 를 넣어주면
+        // 1. sql에 distinct를 넣어서 쿼리문을 날려주고
+        // 2. 중복을 걸러서 Collection에 담아줌
+        return em.createQuery("select distinct o from Orders o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d" +
+                " join fetch o.orderItems oi" +
+                " join fetch oi.item i", Orders.class)
+                .getResultList();
+    }
 }
