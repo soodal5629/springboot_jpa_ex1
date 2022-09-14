@@ -12,6 +12,7 @@ spring:
       hibernate:
         show_sql: true # sysout ?
         format_sql: true
+        default_batch_fetch_size: 100 # in 쿼리를 이용하여 100개씩 가져옴
 logging:
   level:
     org.hibernate.sql: debug # log?

@@ -89,12 +89,22 @@ public class OrderRepository {
     public List<Orders> findAllWithItem() {
         // distinct 를 넣어주면
         // 1. sql에 distinct를 넣어서 쿼리문을 날려주고
-        // 2. 중복을 걸러서 Collection에 담아줌
+        // 2. 중복을 걸러서 Collection 에 담아줌
         return em.createQuery("select distinct o from Orders o" +
                 " join fetch o.member m" +
                 " join fetch o.delivery d" +
                 " join fetch o.orderItems oi" +
                 " join fetch oi.item i", Orders.class)
+                .getResultList();
+    }
+
+    /* toOne 관계 페치조인 + 페이징 처리 */
+    public List<Orders> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery("select o from Orders o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d", Orders.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
     }
 }

@@ -9,6 +9,7 @@ import jpabook.jpashop.repository.OrderSearch;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -44,9 +45,22 @@ public class OrderApiController {
                 .collect(Collectors.toList());
     }
 
+    /* 페이징 처리 불가 */
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3(){
         List<Orders> orders = orderRepository.findAllWithItem();
+        return orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+    }
+
+    /* 페이징 처리 가능 - application.yml 파일에 default_batch_fetch_size: 100 설정 추가함 */
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> ordersV3_page(@RequestParam(value="offset", defaultValue = "0") int offset,
+                                        @RequestParam(value="limit", defaultValue = "100") int limit){
+        // toOne 관계는 페치조인해도 페이징 처리 가능!
+        List<Orders> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+
         return orders.stream()
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
