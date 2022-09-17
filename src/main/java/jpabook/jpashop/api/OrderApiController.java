@@ -48,7 +48,7 @@ public class OrderApiController {
                 .collect(Collectors.toList());
     }
 
-    /* 페이징 처리 불가 */
+    /* 페이징 처리 불가 but 쿼리 한방에 끝남 */
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3(){
         List<Orders> orders = orderRepository.findAllWithItem();
@@ -72,6 +72,11 @@ public class OrderApiController {
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4(){
         return orderQueryRepository.findOrderQueryDtos();
+    }
+
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(){
+        return orderQueryRepository.findAllByDto_optimization();
     }
 
     @Getter
