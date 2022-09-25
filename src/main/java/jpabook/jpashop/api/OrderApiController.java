@@ -78,6 +78,7 @@ public class OrderApiController {
         return orderQueryRepository.findOrderQueryDtos();
     }
 
+    /* 중복(뻥튀기) 없이 정규화된 데이터를 페이징 처리하여 가져올 수 있음 */
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5(){
         return orderQueryRepository.findAllByDto_optimization();

@@ -1,6 +1,8 @@
 package jpabook.jpashop.repository;
 
-import jpabook.jpashop.domain.Orders;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook.jpashop.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -69,6 +71,34 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    /* QueryDSL 사용 */
+    public List<Orders> findAllQueryDSL(OrderSearch orderSearch){
+        QOrders order = QOrders.orders;
+        QMember member = QMember.member;
+
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        return query.select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch, member))
+                .limit(1000)
+                .fetch();   // jpql로 바뀌어서 실행됨
+    }
+
+    /* 동적 쿼리 */
+    private BooleanExpression nameLike(OrderSearch orderSearch, QMember member){
+        if(!StringUtils.hasText(orderSearch.getMemberName())){
+            return null;
+        }
+        return member.username.like(orderSearch.getMemberName());
+    }
+    /* 동적 쿼리 */
+    private BooleanExpression statusEq(OrderStatus statusCond){
+        if(statusCond == null){
+            return null;
+        }
+        return QOrders.orders.status.eq(statusCond);
+    }
     public List<Orders> findAllWithMemberDelivery() {
         return em.createQuery(
                 "select o from Orders o" +
